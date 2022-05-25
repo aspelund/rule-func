@@ -1,6 +1,8 @@
 import { RuleType } from "./types";
 const testNode = (answers) => (node) => {
     switch (node.type) {
+        case RuleType.invalid:
+            return false;
         case RuleType.contains:
             return answers.indexOf(node.answer) >= 0;
         case RuleType.or:
@@ -13,6 +15,7 @@ const testNode = (answers) => (node) => {
 const evalRule = (answers) => (rule) => testNode(answers)(rule.node);
 const evalRules = (rules) => (answers) => rules
     .filter(evalRule(answers))
-    .sort((rule1, rule2) => rule1.priority - rule2.priority);
+    .sort((rule1, rule2) => rule1.priority - rule2.priority)
+    .map((rule) => rule.result);
 export default evalRules;
 export { RuleType };

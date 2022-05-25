@@ -3,6 +3,8 @@ const testNode =
   (answers: Array<string>) =>
   (node: Node): boolean => {
     switch (node.type) {
+      case RuleType.invalid:
+        return false;
       case RuleType.contains:
         return answers.indexOf(node.answer) >= 0;
       case RuleType.or:
@@ -23,7 +25,8 @@ const evalRule =
 const evalRules = (rules: Array<Rule>) => (answers: Array<string>) =>
   rules
     .filter(evalRule(answers))
-    .sort((rule1, rule2) => rule1.priority - rule2.priority);
+    .sort((rule1, rule2) => rule1.priority - rule2.priority)
+    .map((rule) => rule.result);
 
 export default evalRules;
 export { Node, Rule, RuleType };

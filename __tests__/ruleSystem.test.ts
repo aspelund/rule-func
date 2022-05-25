@@ -13,8 +13,8 @@ describe("evalRules", () => {
         },
       },
     ]);
-    expect(testRules(["1a"])).toHaveLength(1);
-    expect(testRules(["1b"])).toHaveLength(0);
+    expect(testRules(["1a"])).toEqual(["apa"]);
+    expect(testRules(["1b"])).toEqual([]);
   });
   it("Should work with simple and", () => {
     const testRules = evalRules([
@@ -31,8 +31,8 @@ describe("evalRules", () => {
         },
       },
     ]);
-    expect(testRules(["1a", "2b"])).toHaveLength(1);
-    expect(testRules(["1a", "2a"])).toHaveLength(0);
+    expect(testRules(["1a", "2b"])).toEqual(["apa"]);
+    expect(testRules(["1a", "2a"])).toEqual([]);
   });
   it("Should work with simple or", () => {
     const testRules = evalRules([
@@ -49,9 +49,9 @@ describe("evalRules", () => {
         },
       },
     ]);
-    expect(testRules(["1a"])).toHaveLength(1);
-    expect(testRules(["1b"])).toHaveLength(1);
-    expect(testRules(["1c"])).toHaveLength(0);
+    expect(testRules(["1a"])).toEqual(["apa"]);
+    expect(testRules(["1b"])).toEqual(["apa"]);
+    expect(testRules(["1c"])).toEqual([]);
   });
   it("Should work with multiple rules", () => {
     const testRules = evalRules([
@@ -69,7 +69,7 @@ describe("evalRules", () => {
       },
       {
         name: "ContainsRule",
-        result: "apa",
+        result: "dapa",
         priority: 2,
         node: {
           type: RuleType.contains,
@@ -78,7 +78,7 @@ describe("evalRules", () => {
       },
       {
         name: "AndRule",
-        result: "apa",
+        result: "lapa",
         priority: 3,
         node: {
           type: RuleType.and,
@@ -89,7 +89,7 @@ describe("evalRules", () => {
         },
       },
     ]);
-    expect(testRules(["1a"])[0].name).toEqual("OrRule");
+    expect(testRules(["1a"])[0]).toEqual("apa");
     expect(testRules(["1a"])).toHaveLength(2);
   });
   it("Should work with priority", () => {
@@ -108,7 +108,7 @@ describe("evalRules", () => {
       },
       {
         name: "ContainsRule",
-        result: "apa",
+        result: "dapa",
         priority: 2,
         node: {
           type: RuleType.contains,
@@ -117,7 +117,7 @@ describe("evalRules", () => {
       },
       {
         name: "AndRule",
-        result: "apa",
+        result: "lapa",
         priority: 1,
         node: {
           type: RuleType.and,
@@ -128,7 +128,7 @@ describe("evalRules", () => {
         },
       },
     ]);
-    expect(testRules(["1a", "2b"])[0].name).toEqual("AndRule");
+    expect(testRules(["1a", "2b"])[0]).toEqual("lapa");
     expect(testRules(["1a", "2b"])).toHaveLength(3);
   });
   describe("with str to rules...", () => {
@@ -183,18 +183,18 @@ describe("evalRules", () => {
         },
         {
           name: "ContainsRule",
-          result: "apa",
+          result: "dapa",
           priority: 2,
           node: convertStringToNode('has("1a")'),
         },
         {
           name: "AndRule",
-          result: "apa",
+          result: "lapa",
           priority: 1,
           node: convertStringToNode('and(has("1a"),has("2b"))'),
         },
       ]);
-      expect(testRules(["1a", "2b"])[0].name).toEqual("AndRule");
+      expect(testRules(["1a", "2b"])[0]).toEqual("lapa");
       expect(testRules(["1a", "2b"])).toHaveLength(3);
     });
   });

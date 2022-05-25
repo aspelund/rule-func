@@ -39,7 +39,7 @@ describe("convertStringToNode", () => {
   });
 });
 
-describe("convertStringToRule", () => {
+describe("convertStringToNode", () => {
   it("should have the correct data", () => {
     const rule = {
       name: "HasRule",
@@ -48,5 +48,23 @@ describe("convertStringToRule", () => {
       node: convertStringToNode('has("1a")'),
     };
     expect(rule.node.type).toEqual(RuleType.contains);
+  });
+  it("should be invalid if there are problems with the quotes", () => {
+    const rule = {
+      name: "HasRule",
+      result: "apa",
+      priority: 3,
+      node: convertStringToNode('has("1a)'),
+    };
+    expect(rule.node).toEqual({ type: RuleType.invalid });
+  });
+  it("should be invalid if there are problems with the parenteses", () => {
+    const rule = {
+      name: "HasRule",
+      result: "apa",
+      priority: 3,
+      node: convertStringToNode('has("1a"))'),
+    };
+    expect(rule.node).toEqual({ type: RuleType.invalid });
   });
 });

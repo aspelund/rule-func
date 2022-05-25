@@ -18,6 +18,9 @@ const getString = (expression) => {
         str += curChar.value;
         curChar = expression.next();
     }
+    if (curChar.done) {
+        throw new Error();
+    }
     return str;
 };
 const convertIteratorToNode = (expression) => {
@@ -54,13 +57,20 @@ const convertIteratorToNode = (expression) => {
         }
     }
     return {
-        type: RuleType.contains,
-        answer: "apa",
+        type: RuleType.invalid,
     };
 };
 const convertStringToNode = (str) => {
     const iterator = str.replace(/\s/g, "")[Symbol.iterator]();
-    const res = convertIteratorToNode(iterator);
-    return Array.isArray(res) ? res[0] : res;
+    try {
+        const res = convertIteratorToNode(iterator);
+        if (!iterator.next().done) {
+            throw new Error();
+        }
+        return Array.isArray(res) ? res[0] : res;
+    }
+    catch (e) {
+        return { type: RuleType.invalid };
+    }
 };
 export { getCommaSeparatedExpressions, getString, convertStringToNode };

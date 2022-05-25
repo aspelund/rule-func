@@ -15,6 +15,7 @@ enum RuleType {
   and,
   or,
   contains,
+  invalid,
 }
 
 export { Rule, RuleType, Node };
