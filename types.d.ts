@@ -18,3 +18,9 @@ export enum RuleType {
   or,
   contains,
 }
+
+export function convertStringToNode(str: string): Node;
+
+export function evalRules(
+  rules: Array<Rule>
+): (answers: Array<string>) => Array<Rule>;

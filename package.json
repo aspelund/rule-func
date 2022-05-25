@@ -1,6 +1,6 @@
 {
   "name": "rule-func",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "Simple package for creating rule systems.",
   "main": "./build/src/index.js",  
   "types": "./types.d.ts",
