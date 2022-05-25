@@ -1,3 +1,4 @@
+import { convertStringToNode } from "./convertStringToRule";
 import { RuleType } from "./types";
 const testNode = (answers) => (node) => {
     switch (node.type) {
@@ -12,7 +13,7 @@ const testNode = (answers) => (node) => {
     }
     return false;
 };
-const evalRule = (answers) => (rule) => testNode(answers)(rule.node);
+const evalRule = (answers) => (rule) => testNode(answers)(typeof rule.node === "string" ? convertStringToNode(rule.node) : rule.node);
 const evalRules = (rules) => (answers) => rules
     .filter(evalRule(answers))
     .sort((rule1, rule2) => rule1.priority - rule2.priority)
