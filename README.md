@@ -20,21 +20,21 @@ rule-func has two main features, `evalRules` that takes an array of rules and ev
 const myRules = [
         {
           name: "OrRule",
-          result: "apa",
+          result: "result 1",
           priority: 3,
-          node: convertStringToNode('or(has("1a"),has("1b"))'),
+          node: 'or(has("1a"),has("1b"))',
         },
         {
           name: "ContainsRule",
-          result: "dapa",
+          result: "result 2",
           priority: 2,
-          node: convertStringToNode('has("1a")'),
+          node: 'has("1a")',
         },
         {
           name: "AndRule",
-          result: "lapa",
+          result: "result 3",
           priority: 1,
-          node: convertStringToNode('and(has("1a"),has("2b"))'),
+          node: 'and(has("1a"),has("2b"))',
         },
       ];
 const myTest = evalRules(myRules);
@@ -44,6 +44,8 @@ const answers : Array<string> = [
 ];
 
 const results = myTest(answers);
+console.log(results);
+// ['result 3', 'result 2', 'result 1'];
 ```
 
 In this example results contains all result strings for the rules that are fulfilled by the set of answers.

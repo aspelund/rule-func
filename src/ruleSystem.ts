@@ -1,4 +1,6 @@
+import { convertStringToNode } from "./convertStringToRule";
 import { Node, RuleType, Rule } from "./types";
+
 const testNode =
   (answers: Array<string>) =>
   (node: Node): boolean => {
@@ -20,7 +22,9 @@ const testNode =
 const evalRule =
   (answers: Array<string>) =>
   (rule: Rule): boolean =>
-    testNode(answers)(rule.node);
+    testNode(answers)(
+      typeof rule.node === "string" ? convertStringToNode(rule.node) : rule.node
+    );
 
 const evalRules = (rules: Array<Rule>) => (answers: Array<string>) =>
   rules

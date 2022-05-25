@@ -1,4 +1,4 @@
-import { RuleType, convertStringToNode, evalRules } from "../src/";
+import { RuleType, evalRules } from "../src/";
 
 describe("evalRules", () => {
   it("Should work with simple system", () => {
@@ -132,66 +132,25 @@ describe("evalRules", () => {
     expect(testRules(["1a", "2b"])).toHaveLength(3);
   });
   describe("with str to rules...", () => {
-    it("should work with simple operations", () => {
-      const original = {
-        name: "ContainsRule",
-        result: "apa",
-        priority: 2,
-        node: {
-          type: RuleType.contains,
-          answer: "1a",
-        },
-      };
-      const fromString = {
-        name: "ContainsRule",
-        result: "apa",
-        priority: 2,
-        node: convertStringToNode('has("1a")'),
-      };
-
-      expect(original).toEqual(fromString);
-    });
-    it("should work with a slightly more advanced rule", () => {
-      const original = {
-        name: "AndRule",
-        result: "apa",
-        priority: 1,
-        node: {
-          type: RuleType.and,
-          nodes: [
-            { type: RuleType.contains, answer: "1a" },
-            { type: RuleType.contains, answer: "2b" },
-          ],
-        },
-      };
-      const fromString = {
-        name: "AndRule",
-        result: "apa",
-        priority: 1,
-        node: convertStringToNode('and(has("1a"),has("2b"))'),
-      };
-      expect(fromString).toEqual(original);
-    });
-
     it("Should work with priority from string", () => {
       const testRules = evalRules([
         {
           name: "OrRule",
           result: "apa",
           priority: 3,
-          node: convertStringToNode('or(has("1a"),has("1b"))'),
+          node: 'or(has("1a"),has("1b"))',
         },
         {
           name: "ContainsRule",
           result: "dapa",
           priority: 2,
-          node: convertStringToNode('has("1a")'),
+          node: 'has("1a")',
         },
         {
           name: "AndRule",
           result: "lapa",
           priority: 1,
-          node: convertStringToNode('and(has("1a"),has("2b"))'),
+          node: 'and(has("1a"),has("2b"))',
         },
       ]);
       expect(testRules(["1a", "2b"])[0]).toEqual("lapa");

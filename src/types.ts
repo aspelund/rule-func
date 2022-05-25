@@ -8,7 +8,7 @@ type Rule = {
   name: string;
   result: string;
   priority: number;
-  node: Node;
+  node: Node | string;
 };
 
 enum RuleType {
